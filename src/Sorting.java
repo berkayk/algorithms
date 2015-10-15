@@ -36,13 +36,58 @@ public class Sorting {
     }
 
     public static void quickSort(Comparable[] arr){
+        if (arr == null){
+            throw new NullPointerException("Array is null at quickSort");
+        }
+
         shuffle(arr);
+        quickSort(arr, 0, arr.length - 1);
+    }
+
+    public static void quickSort(Comparable[] arr, int lo, int hi){
+        System.out.println("Quick sorting indexes " + lo + " - " + hi);
+        if (lo < hi){
+            int p = partition(arr, lo, hi);
+
+            quickSort(arr, lo, p-1);
+            quickSort(arr, p+1, hi);
+        }
+        else
+            return;
+    }
+
+    private static int partition(Comparable[] arr, int lo, int hi) {
+        System.out.println("Partitioning indexes " + lo + " - " + hi);
+        Comparable divider = arr[lo];
+        int i = lo;
+        int j = hi + 1;
+        while (true){
+            while (arr[++i].compareTo(divider) < 0){
+                if (i == hi)
+                    break;
+            }
+
+            while (arr[--j].compareTo(divider) > 0){
+                if (j == lo){
+                    break;
+                }
+            }
+
+            if (i >= j){
+                break;
+            }
+
+            swap(arr, i, j);
+        }
+
+        swap(arr, j, lo);
+        return j;
     }
 
     public static void main(String[] args){
-        System.out.println("Hello Java");
+        System.out.println("Hello Sorting");
 
-        int testSize = 10;
+        int testSize = 100;
         int maxValue = 100;
         Integer[] testArr = new Integer[testSize];
         for (int i = 0; i < testSize; i++){
@@ -51,7 +96,7 @@ public class Sorting {
         }
 
         print(testArr);
-        shuffle(testArr);
+        quickSort(testArr);
         print(testArr);
     }
 }
